@@ -77,7 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 25),
             InkWell(
-              onTap: () => print('Login user'),
+              onTap: () => authController.login(
+                _emailController.text,
+                _passwordController.text,
+              ),
               child: Container(
                 width: MediaQuery.of(context).size.width - 140,
                 height: 50,

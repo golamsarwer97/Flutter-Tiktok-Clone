@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../constants.dart';
 import '../../widgets/text_input_field.dart';
@@ -19,6 +21,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
+  // File? image;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -26,6 +30,14 @@ class _SignupScreenState extends State<SignupScreen> {
     _usernameController.dispose();
     super.dispose();
   }
+
+  // void selectImage() {
+  //   authController.pickImage(ImageSource.gallery);
+  //   File? im = authController.profileImage;
+  //   setState(() {
+  //     image = im;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +66,15 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(height: 25),
             Stack(
               children: [
+                // authController.profileImage != null
+                //     ? CircleAvatar(
+                //         radius: 64,
+                //         backgroundColor: Colors.black,
+                //         backgroundImage: MemoryImage(
+                //           authController.profileImage!.readAsBytesSync(),
+                //         ),
+                //       )
+                //     :
                 CircleAvatar(
                   radius: 64,
                   backgroundColor: Colors.black,
@@ -65,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   bottom: -10,
                   left: 80,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () => authController.pickImage(),
                     icon: Icon(
                       Icons.add_a_photo_rounded,
                     ),
@@ -112,7 +133,12 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             SizedBox(height: 25),
             InkWell(
-              onTap: () => print('Register user'),
+              onTap: () => authController.registerUser(
+                _usernameController.text,
+                _emailController.text,
+                _passwordController.text,
+                authController.profileImage,
+              ),
               child: Container(
                 width: MediaQuery.of(context).size.width - 140,
                 height: 50,
